@@ -55,7 +55,7 @@ class VectorStore:
     def get_document_chunks(self, document_id: str) -> list[dict[str, Any]]:
         result = self.collection.get(where={"document_id": document_id}, include=["documents", "metadatas"])
         chunks: list[dict[str, Any]] = []
-        for text, metadata in zip(result.get("documents", []) or [], result.get("metadatas", []) or []):
+        for text, metadata in zip(result.get("documents", []) or [], result.get("metadatas", []) or [], strict=False):
             chunks.append({"content": text, "metadata": metadata or {}})
         return chunks
 

@@ -4,15 +4,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from agents.research_agent import ResearchAgent
 from core.config import Settings, get_settings
 from core.llm_provider import OpenAIProvider
-
 from rag.embeddings import EmbeddingModel
+from rag.rag_pipeline import RAGPipeline
 from rag.retriever import Retriever
 from rag.vector_store import VectorStore
-from rag.rag_pipeline import RAGPipeline
-
-from agents.research_agent import ResearchAgent
 
 
 @dataclass

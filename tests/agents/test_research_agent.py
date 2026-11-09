@@ -3,8 +3,8 @@
 from pathlib import Path
 
 import pymupdf
-
 from core.config import Settings
+
 from agents.research_agent import ResearchAgent
 from rag.embeddings import EmbeddingModel
 from rag.ingestion import ingest_pdf

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "r1",
+    "question": "What improves grounded answers?",
+    "relevant_pages": [1]
+  },
+  {
+    "id": "r2",
+    "question": "What is used for embeddings and storage?",
+    "relevant_pages": [2]
+  }
+]

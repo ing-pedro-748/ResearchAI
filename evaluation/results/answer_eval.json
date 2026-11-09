@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "records": [
+    {
+      "id": "r1",
+      "question": "What improves grounded answers?",
+      "answer": "pending (OPENAI_API_KEY not configured)",
+      "sufficient_context": null,
+      "num_sources": 0,
+      "num_citations": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_seconds": 0.0,
+      "faithfulness": "pending",
+      "answer_relevance": "pending",
+      "citation_correctness": "pending"
+    },
+    {
+      "id": "r2",
+      "question": "What is used for embeddings and storage?",
+      "answer": "pending (OPENAI_API_KEY not configured)",
+      "sufficient_context": null,
+      "num_sources": 0,
+      "num_citations": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_seconds": 0.0,
+      "faithfulness": "pending",
+      "answer_relevance": "pending",
+      "citation_correctness": "pending"
+    }
+  ]
+}
