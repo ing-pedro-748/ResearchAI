@@ -39,7 +39,7 @@ Backend and frontend commands will be documented in later phases.
 ## Development phases
 - [x] Phase 1: Project initialization
 - [x] Phase 2: Document ingestion
-- [ ] Phase 3: RAG implementation
+- [x] Phase 3: RAG implementation
 - [ ] Phase 4: Prompt engineering
 - [ ] Phase 5: Agentic workflows
 - [ ] Phase 6: Backend and frontend
