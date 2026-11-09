@@ -23,3 +23,16 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Secrets and credentials
+.env.*
+!.env.example
+*.pem
+*.key
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
