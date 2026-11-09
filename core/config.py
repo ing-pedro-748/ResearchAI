@@ -1,0 +1,48 @@
+"""Application configuration loaded from environment variables."""
+
+from pathlib import Path
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    """Centralized, environment-driven configuration."""
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
+
+    openai_api_key: str = ""
+    openai_model: str = "gpt-4o-mini"
+    openai_temperature: float = 0.2
+    openai_timeout_seconds: int = 60
+
+    embedding_model: str = "all-MiniLM-L6-v2"
+
+    chunk_size: int = 1000
+    chunk_overlap: int = 200
+
+    retrieval_top_k: int = 5
+    retrieval_score_threshold: float = 0.3
+
+    chroma_persist_dir: str = "./data/chroma_db"
+    documents_dir: str = "./data/documents"
+
+    log_level: str = "INFO"
+    max_agent_steps: int = 8
+
+    @property
+    def chroma_path(self) -> Path:
+        return Path(self.chroma_persist_dir)
+
+
+_settings: Settings | None = None
+
+
+def get_settings() -> Settings:
+    global _settings
+    if _settings is None:
+        _settings = Settings()
+    return _settings

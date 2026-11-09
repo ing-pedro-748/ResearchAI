@@ -37,8 +37,8 @@ Copy-Item .env.example .env
 Backend and frontend commands will be documented in later phases.
 
 ## Development phases
-- [x] Phase 1: Project initialization (in progress)
-- [ ] Phase 2: Document ingestion
+- [x] Phase 1: Project initialization
+- [x] Phase 2: Document ingestion
 - [ ] Phase 3: RAG implementation
 - [ ] Phase 4: Prompt engineering
 - [ ] Phase 5: Agentic workflows
