@@ -22,7 +22,8 @@ async def lifespan(app: FastAPI):
     app.state.research_agent = services.research_agent
     from backend.services.document_service import DocumentService
 
-    app.state.document_service = DocumentService(services.settings, services.vector_store)
+    app.state.document_service = DocumentService(services.settings, services.vector_store, services.bm25_index)
+    app.state.hybrid_retriever = services.hybrid_retriever
     yield
 
 

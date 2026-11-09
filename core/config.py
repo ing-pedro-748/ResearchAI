@@ -27,6 +27,11 @@ class Settings(BaseSettings):
     retrieval_top_k: int = 5
     retrieval_score_threshold: float = 0.3
 
+    vector_search_top_k: int = 10
+    bm25_search_top_k: int = 10
+    hybrid_final_top_k: int = 5
+    rrf_k: int = 60
+
     chroma_persist_dir: str = "./data/chroma_db"
     documents_dir: str = "./data/documents"
 

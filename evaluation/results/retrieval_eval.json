@@ -1,29 +1,81 @@
 {
-  "top_k": 5,
-  "mean_precision_at_k": 1.0,
-  "mean_recall_at_k": 1.0,
-  "mrr": 1.0,
-  "per_question": [
-    {
-      "id": "r1",
-      "question": "What improves grounded answers?",
-      "precision_at_k": 1.0,
-      "recall_at_k": 1.0,
-      "reciprocal_rank": 1.0,
-      "retrieved": [
-        "sample_research.pdf:1"
-      ]
-    },
-    {
-      "id": "r2",
-      "question": "What is used for embeddings and storage?",
-      "precision_at_k": 1.0,
-      "recall_at_k": 1.0,
-      "reciprocal_rank": 1.0,
-      "retrieved": [
-        "sample_research.pdf:2"
-      ]
-    }
-  ],
+  "vector_search": {
+    "top_k": 5,
+    "mean_precision_at_k": 0.2,
+    "mean_recall_at_k": 1.0,
+    "mrr": 1.0,
+    "mean_latency_seconds": 0.04633949999970355,
+    "per_question": [
+      {
+        "id": "r1",
+        "question": "What improves grounded answers?",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "latency_seconds": 0.06530580000071495,
+        "retrieved": [
+          "sample_research.pdf:1",
+          "Constitucion-Politica-Colombia-1991.pdf:5",
+          "Constitucion-Politica-Colombia-1991.pdf:16",
+          "Constitucion-Politica-Colombia-1991.pdf:12",
+          "Constitucion-Politica-Colombia-1991.pdf:127"
+        ]
+      },
+      {
+        "id": "r2",
+        "question": "What is used for embeddings and storage?",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "latency_seconds": 0.027373199998692144,
+        "retrieved": [
+          "sample_research.pdf:2",
+          "The_TNM_classification_of_prostate_cance.pdf:7",
+          "Histopathology - 2022 - Kench - WHO Classification of Tumours fifth edition  evolving issues in the classification.pdf:1",
+          "Constitucion-Politica-Colombia-1991.pdf:19",
+          "Constitucion-Politica-Colombia-1991.pdf:115"
+        ]
+      }
+    ]
+  },
+  "hybrid_search": {
+    "top_k": 5,
+    "mean_precision_at_k": 0.2,
+    "mean_recall_at_k": 1.0,
+    "mrr": 1.0,
+    "mean_latency_seconds": 0.03401019999910204,
+    "per_question": [
+      {
+        "id": "r1",
+        "question": "What improves grounded answers?",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "latency_seconds": 0.0322225999989314,
+        "retrieved": [
+          "sample_research.pdf:1",
+          "Constitucion-Politica-Colombia-1991.pdf:5",
+          "Histopathology - 2022 - Kench - WHO Classification of Tumours fifth edition  evolving issues in the classification.pdf:6",
+          "Constitucion-Politica-Colombia-1991.pdf:16",
+          "Histopathology - 2022 - Kench - WHO Classification of Tumours fifth edition  evolving issues in the classification.pdf:1"
+        ]
+      },
+      {
+        "id": "r2",
+        "question": "What is used for embeddings and storage?",
+        "precision_at_k": 0.2,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "latency_seconds": 0.035797799999272684,
+        "retrieved": [
+          "sample_research.pdf:2",
+          "The_TNM_classification_of_prostate_cance.pdf:7",
+          "Histopathology - 2022 - Kench - WHO Classification of Tumours fifth edition  evolving issues in the classification.pdf:6",
+          "Histopathology - 2022 - Kench - WHO Classification of Tumours fifth edition  evolving issues in the classification.pdf:1",
+          "The_TNM_classification_of_prostate_cance.pdf:2"
+        ]
+      }
+    ]
+  },
   "status": "completed"
 }

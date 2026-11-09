@@ -60,6 +60,11 @@ Frontend:
 3. Summarize, compare, or extract methodology in Document Analysis.
 4. Generate and download research reports.
 
+## Hybrid Search
+ResearchAI now combines ChromaDB vector search and BM25 lexical search using
+Reciprocal Rank Fusion (RRF, k=60). Retrieval Explorer displays RRF scores,
+component scores, and which method retrieved each chunk.
+
 ## Evaluation
 Run retrieval evaluation:
 ```powershell

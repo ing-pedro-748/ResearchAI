@@ -83,17 +83,20 @@ with tab_retrieval:
                 st.warning("Enter a question.")
             else:
                 doc_filter = None if r_filter == "None" else r_filter
-                results = services.retriever.retrieve(r_question, top_k=r_top_k, document_id=doc_filter)
+                results = services.hybrid_retriever.retrieve(r_question, top_k=r_top_k, document_id=doc_filter)
                 if not results:
                     st.info("No results found.")
                 else:
                     st.markdown(f"### {len(results)} results")
                     for idx, chunk in enumerate(results, start=1):
-                        with st.expander(f"Result {idx} — score={chunk.score:.3f}"):
+                        with st.expander(f"Result {idx} — RRF={chunk.rrf_score:.4f}"):
                             st.write("**Chunk ID:**", chunk.chunk_id)
                             st.write("**Source:**", chunk.metadata.get("source"))
                             st.write("**Page:**", chunk.metadata.get("page"))
-                            st.write("**Score:**", round(chunk.score, 4))
+                            st.write("**RRF Score:**", round(chunk.rrf_score, 6))
+                            st.write("**Vector Score:**", chunk.vector_score)
+                            st.write("**BM25 Score:**", chunk.bm25_score)
+                            st.write("**Retrieved by:**", ", ".join(chunk.sources))
                             st.write("**Metadata:**", chunk.metadata)
                             st.write("**Content:**")
                             st.write(chunk.content)

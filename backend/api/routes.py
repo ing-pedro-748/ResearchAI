@@ -84,7 +84,7 @@ async def query_documents(payload: QueryRequest, request: Request):
 
 @router.post("/retrieve")
 async def retrieve_documents(payload: RetrieveRequest, request: Request):
-    retriever = request.app.state.retriever
+    retriever = request.app.state.hybrid_retriever
     chunks = retriever.retrieve(payload.question, top_k=payload.top_k, document_id=payload.document_id)
     results = [
         SourceChunk(
@@ -92,8 +92,13 @@ async def retrieve_documents(payload: RetrieveRequest, request: Request):
             content=chunk.content,
             source=chunk.metadata.get("source", ""),
             page=chunk.metadata.get("page"),
-            score=chunk.score,
-            metadata=chunk.metadata,
+            score=chunk.rrf_score,
+            metadata={
+                **chunk.metadata,
+                "vector_score": chunk.vector_score,
+                "bm25_score": chunk.bm25_score,
+                "retrieved_by": chunk.sources,
+            },
         )
         for chunk in chunks
     ]

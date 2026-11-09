@@ -59,6 +59,22 @@ class VectorStore:
             chunks.append({"content": text, "metadata": metadata or {}})
         return chunks
 
+    def get_all_chunks(self) -> list[dict[str, Any]]:
+        result = self.collection.get(include=["documents", "metadatas"])
+        chunks: list[dict[str, Any]] = []
+        ids = result.get("ids", []) or []
+        documents = result.get("documents", []) or []
+        metadatas = result.get("metadatas", []) or []
+        for chunk_id, text, metadata in zip(ids, documents, metadatas, strict=False):
+            chunks.append(
+                {
+                    "id": chunk_id,
+                    "content": text,
+                    "metadata": metadata or {},
+                }
+            )
+        return chunks
+
     def list_documents(self) -> list[dict[str, str]]:
         result = self.collection.get(include=["metadatas"])
         seen: dict[str, str] = {}
