@@ -84,15 +84,17 @@ class VectorStore:
             where=where,
         )
 
+        ids = result.get("ids", [[]])[0]
         documents = result.get("documents", [[]])[0]
         metadatas = result.get("metadatas", [[]])[0]
         distances = result.get("distances", [[]])[0]
 
         output: list[dict[str, Any]] = []
-        for text, metadata, distance in zip(documents, metadatas, distances, strict=False):
+        for chunk_id, text, metadata, distance in zip(ids, documents, metadatas, distances, strict=False):
             score = 1.0 - float(distance)
             output.append(
                 {
+                    "id": chunk_id,
                     "content": text,
                     "metadata": metadata or {},
                     "score": score,

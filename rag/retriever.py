@@ -10,7 +10,8 @@ from rag.vector_store import VectorStore
 
 @dataclass
 class RetrievedChunk:
-    content: str
+    chunk_id: str = ""
+    content: str = ""
     metadata: dict[str, Any] = field(default_factory=dict)
     score: float = 0.0
 
@@ -53,6 +54,7 @@ class Retriever:
                 continue
             chunks.append(
                 RetrievedChunk(
+                    chunk_id=result.get("id", ""),
                     content=result.get("content", ""),
                     metadata=result.get("metadata", {}) or {},
                     score=score,

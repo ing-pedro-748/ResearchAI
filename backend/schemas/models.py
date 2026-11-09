@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 
@@ -18,13 +20,21 @@ class IngestResponse(BaseModel):
 
 
 class SourceChunk(BaseModel):
+    chunk_id: str = ""
     content: str
     source: str = ""
     page: int | None = None
     score: float = 0.0
+    metadata: dict[str, Any] = Field(default_factory=dict)
 
 
 class QueryRequest(BaseModel):
+    question: str = Field(min_length=1)
+    top_k: int | None = None
+    document_id: str | None = None
+
+
+class RetrieveRequest(BaseModel):
     question: str = Field(min_length=1)
     top_k: int | None = None
     document_id: str | None = None

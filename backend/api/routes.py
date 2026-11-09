@@ -14,6 +14,7 @@ from backend.schemas.models import (
     QueryRequest,
     QueryResponse,
     ReportRequest,
+    RetrieveRequest,
     SourceChunk,
     SummarizeRequest,
     TextResponse,
@@ -61,10 +62,12 @@ async def query_documents(payload: QueryRequest, request: Request):
     answer = pipeline.answer(payload.question, top_k=payload.top_k, document_id=payload.document_id)
     sources = [
         SourceChunk(
+            chunk_id=chunk.chunk_id,
             content=chunk.content,
             source=chunk.metadata.get("source", ""),
             page=chunk.metadata.get("page"),
             score=chunk.score,
+            metadata=chunk.metadata,
         )
         for chunk in answer.sources
     ]
@@ -77,6 +80,24 @@ async def query_documents(payload: QueryRequest, request: Request):
         total_tokens=answer.total_tokens,
         latency_seconds=answer.latency_seconds,
     )
+
+
+@router.post("/retrieve")
+async def retrieve_documents(payload: RetrieveRequest, request: Request):
+    retriever = request.app.state.retriever
+    chunks = retriever.retrieve(payload.question, top_k=payload.top_k, document_id=payload.document_id)
+    results = [
+        SourceChunk(
+            chunk_id=chunk.chunk_id,
+            content=chunk.content,
+            source=chunk.metadata.get("source", ""),
+            page=chunk.metadata.get("page"),
+            score=chunk.score,
+            metadata=chunk.metadata,
+        )
+        for chunk in chunks
+    ]
+    return {"results": results}
 
 
 @router.post("/summarize", response_model=TextResponse)
