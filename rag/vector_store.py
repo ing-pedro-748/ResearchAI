@@ -52,6 +52,13 @@ class VectorStore:
     def delete_document(self, document_id: str) -> None:
         self.collection.delete(where={"document_id": document_id})
 
+    def get_document_chunks(self, document_id: str) -> list[dict[str, Any]]:
+        result = self.collection.get(where={"document_id": document_id}, include=["documents", "metadatas"])
+        chunks: list[dict[str, Any]] = []
+        for text, metadata in zip(result.get("documents", []) or [], result.get("metadatas", []) or []):
+            chunks.append({"content": text, "metadata": metadata or {}})
+        return chunks
+
     def list_documents(self) -> list[dict[str, str]]:
         result = self.collection.get(include=["metadatas"])
         seen: dict[str, str] = {}

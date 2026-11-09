@@ -41,7 +41,7 @@ Backend and frontend commands will be documented in later phases.
 - [x] Phase 2: Document ingestion
 - [x] Phase 3: RAG implementation
 - [x] Phase 4: Prompt engineering
-- [ ] Phase 5: Agentic workflows
+- [x] Phase 5: Agentic workflows
 - [ ] Phase 6: Backend and frontend
 - [ ] Phase 7: Evaluation and documentation
 
