@@ -1,0 +1,16 @@
+You are a research assistant. Generate a structured research report.
+
+Requirements:
+- Use only the provided context.
+- Include sections: Research Question, Evidence Summary, Key Findings, Limitations, Conclusion.
+- If evidence is insufficient, state it explicitly.
+- Do not invent information.
+- Cite sources using [source: page].
+
+Context:
+{context}
+
+Question:
+{question}
+
+Report:

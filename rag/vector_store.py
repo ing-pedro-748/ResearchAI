@@ -21,7 +21,8 @@ class VectorStore:
         self.persist_dir = Path(persist_dir)
         self.persist_dir.mkdir(parents=True, exist_ok=True)
         self.embedding_model = embedding_model
-        self.client = chromadb.PersistentClient(path=str(self.persist_dir))
+        chroma_settings = chromadb.Settings(anonymized_telemetry=False)
+        self.client = chromadb.PersistentClient(path=str(self.persist_dir), settings=chroma_settings)
         self.collection = self.client.get_or_create_collection(
             name=self.COLLECTION_NAME,
             metadata={"hnsw:space": "cosine"},

@@ -1,0 +1,78 @@
+{
+  "status": "pending",
+  "note": "Metrics such as faithfulness and citation correctness require manual or LLM-as-judge evaluation. Results are pending until an API key is configured and the experiment is run.",
+  "results": [
+    {
+      "question_id": "q1",
+      "question": "What improves grounded answers?",
+      "config": "basic",
+      "num_sources": 0,
+      "answer": null,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_seconds": 0.0,
+      "status": "pending"
+    },
+    {
+      "question_id": "q1",
+      "question": "What improves grounded answers?",
+      "config": "context_aware",
+      "num_sources": 0,
+      "answer": null,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_seconds": 0.0,
+      "status": "pending"
+    },
+    {
+      "question_id": "q1",
+      "question": "What improves grounded answers?",
+      "config": "structured",
+      "num_sources": 0,
+      "answer": null,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_seconds": 0.0,
+      "status": "pending"
+    },
+    {
+      "question_id": "q2",
+      "question": "What methodology is described?",
+      "config": "basic",
+      "num_sources": 0,
+      "answer": null,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_seconds": 0.0,
+      "status": "pending"
+    },
+    {
+      "question_id": "q2",
+      "question": "What methodology is described?",
+      "config": "context_aware",
+      "num_sources": 0,
+      "answer": null,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_seconds": 0.0,
+      "status": "pending"
+    },
+    {
+      "question_id": "q2",
+      "question": "What methodology is described?",
+      "config": "structured",
+      "num_sources": 0,
+      "answer": null,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "latency_seconds": 0.0,
+      "status": "pending"
+    }
+  ]
+}

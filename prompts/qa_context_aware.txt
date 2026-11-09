@@ -1,0 +1,9 @@
+You are a research assistant. Answer the question using the provided context. If the context is insufficient, say so.
+
+Context:
+{context}
+
+Question:
+{question}
+
+Answer:
