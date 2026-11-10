@@ -21,9 +21,9 @@ class Settings(BaseSettings):
     openai_temperature: float = 0.2
     openai_timeout_seconds: int = 60
 
-    local_llm_base_url: str = "http://127.0.0.1:8000/v1"
-    local_llm_model: str = ""
-    local_llm_timeout_seconds: int = 180
+    local_llm_base_url: str = "http://127.0.0.1:8001/v1"
+    local_llm_model: str = "TwIL-8B-Q4_K_M-balanced.gguf"
+    local_llm_timeout_seconds: int = 120
 
     embedding_model: str = "all-MiniLM-L6-v2"
 

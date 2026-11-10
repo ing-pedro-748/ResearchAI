@@ -11,7 +11,7 @@ def _local_settings() -> Settings:
     return Settings(
         llm_provider="local",
         openai_api_key="",
-        local_llm_base_url="http://127.0.0.1:8000/v1",
+        local_llm_base_url="http://127.0.0.1:8001/v1",
         local_llm_model="TwIL-8B-Q4_K_M-balanced.gguf",
         local_llm_timeout_seconds=10,
     )
@@ -27,7 +27,7 @@ def test_local_provider_uses_local_endpoint() -> None:
     with patch("core.providers.local_llm_provider.OpenAI") as mock_openai:
         LocalLLMProvider(_local_settings())
         mock_openai.assert_called_once()
-        assert mock_openai.call_args.kwargs["base_url"] == "http://127.0.0.1:8000/v1"
+        assert mock_openai.call_args.kwargs["base_url"] == "http://127.0.0.1:8001/v1"
 
 
 def test_local_provider_sends_system_and_user_prompts() -> None:

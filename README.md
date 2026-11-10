@@ -118,25 +118,46 @@ Streamlit will open the web interface in your browser.
 
 ## Local LLM (llama.cpp)
 
-ResearchAI can use a local GGUF model served by `llama-cpp-python` instead of OpenAI.
+ResearchAI can use a local GGUF model served by an independent `llama-cpp-python` server.
+The model runs outside ResearchAI; ResearchAI only calls the OpenAI-compatible HTTP API.
 
-1. Start the server:
+1. Start the independent server with `server.py`:
+
 ```powershell
-python -m llama_cpp.server --model "TwIL-8B-Q4_K_M-balanced.gguf" --host 127.0.0.1 --port 8000
+python server.py
 ```
 
-2. Configure `.env`:
+The server listens on:
+
+- Host: `127.0.0.1`
+- Port: `8001`
+- API base URL: `http://127.0.0.1:8001/v1`
+
+2. Verify the server:
+
+```powershell
+Invoke-RestMethod -Uri "http://127.0.0.1:8001/v1/models" -Method Get
+```
+
+3. Configure `.env`:
+
 ```env
 LLM_PROVIDER=local
-LOCAL_LLM_BASE_URL=http://127.0.0.1:8000/v1
+LOCAL_LLM_BASE_URL=http://127.0.0.1:8001/v1
 LOCAL_LLM_MODEL=TwIL-8B-Q4_K_M-balanced.gguf
-LOCAL_LLM_TIMEOUT_SECONDS=180
+LOCAL_LLM_TIMEOUT_SECONDS=120
 ```
 
-3. Run ResearchAI normally. No `OPENAI_API_KEY` is required.
+4. Run ResearchAI normally. No `OPENAI_API_KEY` is required for local generation.
 
-The local provider uses the OpenAI-compatible API exposed by the server and does not load
-the GGUF file inside ResearchAI.
+To switch back to OpenAI, set:
+
+```env
+LLM_PROVIDER=openai
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+Do not commit the GGUF model file to Git. Keep it outside the repository or add it to `.gitignore`.
 
 ## Hybrid Search
 
