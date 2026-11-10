@@ -14,10 +14,16 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    llm_provider: str = "openai"
+
     openai_api_key: str = ""
     openai_model: str = "gpt-4o-mini"
     openai_temperature: float = 0.2
     openai_timeout_seconds: int = 60
+
+    local_llm_base_url: str = "http://127.0.0.1:8000/v1"
+    local_llm_model: str = ""
+    local_llm_timeout_seconds: int = 180
 
     embedding_model: str = "all-MiniLM-L6-v2"
 

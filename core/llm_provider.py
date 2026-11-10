@@ -1,11 +1,9 @@
-"""LLM provider abstraction."""
+"""LLM provider abstraction and factory."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Protocol
-
-from openai import OpenAI
 
 from core.config import Settings
 
@@ -26,38 +24,16 @@ class LLMProvider(Protocol):
     def generate(self, system_prompt: str, user_prompt: str) -> LLMResponse: ...
 
 
-class OpenAIProvider:
-    """OpenAI chat completions provider."""
+# Backward-compatible re-exports.
+from core.providers.local_llm_provider import LocalLLMProvider  # noqa: E402
+from core.providers.openai_provider import OpenAIProvider  # noqa: E402
 
-    def __init__(self, settings: Settings) -> None:
-        self.settings = settings
-        self.client = OpenAI(
-            api_key=settings.openai_api_key,
-            timeout=settings.openai_timeout_seconds,
-        )
 
-    def generate(self, system_prompt: str, user_prompt: str) -> LLMResponse:
-        if not self.settings.openai_api_key:
-            raise LLMError("OPENAI_API_KEY is not configured")
-
-        try:
-            response = self.client.chat.completions.create(
-                model=self.settings.openai_model,
-                temperature=self.settings.openai_temperature,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt},
-                ],
-            )
-        except Exception as exc:  # noqa: BLE001 - convert provider errors
-            raise LLMError(f"OpenAI request failed: {exc}") from exc
-
-        choice = response.choices[0]
-        text = choice.message.content or ""
-        usage = response.usage
-        return LLMResponse(
-            text=text,
-            prompt_tokens=getattr(usage, "prompt_tokens", 0) or 0,
-            completion_tokens=getattr(usage, "completion_tokens", 0) or 0,
-            total_tokens=getattr(usage, "total_tokens", 0) or 0,
-        )
+def create_llm_provider(settings: Settings) -> LLMProvider:
+    """Create the configured LLM provider."""
+    provider = (settings.llm_provider or "openai").strip().lower()
+    if provider == "openai":
+        return OpenAIProvider(settings)
+    if provider == "local":
+        return LocalLLMProvider(settings)
+    raise ValueError(f"Unsupported LLM_PROVIDER: {settings.llm_provider}")

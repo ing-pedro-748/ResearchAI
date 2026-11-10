@@ -106,6 +106,28 @@ Streamlit will open the web interface in your browser.
 5. Use **Research Reports** to generate and download Markdown reports.
 6. Use **Evaluation** to inspect retrieval experiment results.
 
+## Local LLM (llama.cpp)
+
+ResearchAI can use a local GGUF model served by `llama-cpp-python` instead of OpenAI.
+
+1. Start the server:
+```powershell
+python -m llama_cpp.server --model "TwIL-8B-Q4_K_M-balanced.gguf" --host 127.0.0.1 --port 8000
+```
+
+2. Configure `.env`:
+```env
+LLM_PROVIDER=local
+LOCAL_LLM_BASE_URL=http://127.0.0.1:8000/v1
+LOCAL_LLM_MODEL=TwIL-8B-Q4_K_M-balanced.gguf
+LOCAL_LLM_TIMEOUT_SECONDS=180
+```
+
+3. Run ResearchAI normally. No `OPENAI_API_KEY` is required.
+
+The local provider uses the OpenAI-compatible API exposed by the server and does not load
+the GGUF file inside ResearchAI.
+
 ## Hybrid Search
 
 ResearchAI combines two independent retrieval mechanisms:

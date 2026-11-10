@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from agents.research_agent import ResearchAgent
 from core.config import Settings, get_settings
-from core.llm_provider import OpenAIProvider
+from core.llm_provider import LLMProvider, create_llm_provider
 from rag.bm25_index import BM25Index
 from rag.embeddings import EmbeddingModel
 from rag.hybrid_retriever import HybridRetriever
@@ -23,7 +23,7 @@ class ServiceContainer:
     retriever: Retriever
     bm25_index: BM25Index
     hybrid_retriever: HybridRetriever
-    llm_provider: OpenAIProvider
+    llm_provider: LLMProvider
     rag_pipeline: RAGPipeline
     research_agent: ResearchAgent
 
@@ -40,7 +40,7 @@ def build_services(settings: Settings | None = None) -> ServiceContainer:
     bm25_index = BM25Index()
     bm25_index.build(vector_store.get_all_chunks())
     hybrid_retriever = HybridRetriever(vector_store, bm25_index, settings)
-    llm_provider = OpenAIProvider(settings)
+    llm_provider = create_llm_provider(settings)
     rag_pipeline = RAGPipeline(retriever, llm_provider)
     research_agent = ResearchAgent(retriever, vector_store, llm_provider, settings)
     return ServiceContainer(
