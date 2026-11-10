@@ -51,13 +51,23 @@ ResearchAI/
 
 ## Setup (Windows)
 
-Open a PowerShell terminal in the project folder:
+Open a PowerShell terminal and run:
 
 ```powershell
-cd "C:\Users\Lenovo\Documents\Opencode\RAG"
+# 1. Clone the repository
+git clone <REPOSITORY_URL>
+cd ResearchAI
+
+# 2. Create the virtual environment
 python -m venv .venv
+
+# 3. Activate the virtual environment
 .\.venv\Scripts\Activate.ps1
+
+# 4. Install dependencies
 pip install -r requirements.txt
+
+# 5. Create the environment file
 Copy-Item .env.example .env
 ```
 
@@ -68,7 +78,7 @@ OPENAI_API_KEY=your_api_key_here
 ```
 
 The application can start and use Retrieval Explorer without an API key. Chat, summaries,
-comparisons, methodology extraction, and reports require an API key.
+comparisons, methodology extraction, and reports require an API key or a local LLM.
 
 ## How to run
 
@@ -77,9 +87,9 @@ Use two separate terminals (consoles).
 ### Terminal 1: Backend (FastAPI)
 
 ```powershell
-cd "C:\Users\Lenovo\Documents\Opencode\RAG"
+cd ResearchAI
 .\.venv\Scripts\Activate.ps1
-.\.venv\Scripts\python.exe -m uvicorn backend.main:app --reload
+python -m uvicorn backend.main:app --reload
 ```
 
 The backend will be available at:
@@ -90,9 +100,9 @@ The backend will be available at:
 ### Terminal 2: Frontend (Streamlit)
 
 ```powershell
-cd "C:\Users\Lenovo\Documents\Opencode\RAG"
+cd ResearchAI
 .\.venv\Scripts\Activate.ps1
-.\.venv\Scripts\python.exe -m streamlit run app/main.py
+python -m streamlit run app/main.py
 ```
 
 Streamlit will open the web interface in your browser.
