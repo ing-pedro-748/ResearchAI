@@ -16,6 +16,10 @@ class Settings(BaseSettings):
 
     llm_provider: str = "openai"
 
+    llm_context_window: int = 4096
+    llm_reserved_answer_tokens: int = 512
+    llm_prompt_safety_margin: int = 128
+
     openai_api_key: str = ""
     openai_model: str = "gpt-4o-mini"
     openai_temperature: float = 0.2

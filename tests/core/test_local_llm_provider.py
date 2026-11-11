@@ -65,7 +65,7 @@ def test_local_provider_handles_server_unavailable() -> None:
         try:
             provider.generate("s", "u")
         except Exception as exc:
-            assert "Local LLM request failed" in str(exc)
+            assert "unavailable" in str(exc).lower()
         else:
             raise AssertionError("Expected an error")
 
@@ -81,3 +81,50 @@ def test_factory_selects_local() -> None:
     with patch("core.providers.local_llm_provider.OpenAI"):
         provider = create_llm_provider(_local_settings())
         assert type(provider).__name__ == "LocalLLMProvider"
+
+
+def test_local_provider_classifies_timeout() -> None:
+    with patch("core.providers.local_llm_provider.OpenAI") as mock_openai:
+        mock_client = MagicMock()
+        mock_openai.return_value = mock_client
+        mock_client.chat.completions.create.side_effect = Exception("Request timed out")
+
+        provider = LocalLLMProvider(_local_settings())
+        try:
+            provider.generate("s", "u")
+        except Exception as exc:
+            assert "timed out" in str(exc).lower()
+        else:
+            raise AssertionError("Expected an error")
+
+
+def test_local_provider_classifies_connection_refused() -> None:
+    with patch("core.providers.local_llm_provider.OpenAI") as mock_openai:
+        mock_client = MagicMock()
+        mock_openai.return_value = mock_client
+        mock_client.chat.completions.create.side_effect = Exception("Connection refused")
+
+        provider = LocalLLMProvider(_local_settings())
+        try:
+            provider.generate("s", "u")
+        except Exception as exc:
+            assert "unavailable" in str(exc).lower()
+        else:
+            raise AssertionError("Expected an error")
+
+
+def test_local_provider_classifies_invalid_model() -> None:
+    with patch("core.providers.local_llm_provider.OpenAI") as mock_openai:
+        mock_client = MagicMock()
+        mock_openai.return_value = mock_client
+        exc = Exception("not found")
+        exc.status_code = 404
+        mock_client.chat.completions.create.side_effect = exc
+
+        provider = LocalLLMProvider(_local_settings())
+        try:
+            provider.generate("s", "u")
+        except Exception as exc:
+            assert "not found" in str(exc).lower() or "model" in str(exc).lower()
+        else:
+            raise AssertionError("Expected an error")

@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from core.llm_provider import LLMProvider
-
+from core.tokenizer import count_tokens, truncate_text
 from rag.retriever import RetrievedChunk, Retriever
 
 
@@ -38,12 +38,49 @@ class RAGPipeline:
         )
         self._template = self.prompt_path.read_text(encoding="utf-8")
 
-    def _build_context(self, chunks: list[RetrievedChunk]) -> str:
+    def _available_context_tokens(self, question: str) -> int:
+        system_prompt = "You are a careful research assistant. Ground every claim in the provided context."
+        system_tokens = count_tokens(system_prompt)
+        question_tokens = count_tokens(question)
+        template_tokens = count_tokens(self._template.replace("{context}", "").replace("{question}", ""))
+        reserved = (
+            self.llm_provider.settings.llm_reserved_answer_tokens
+            if hasattr(self.llm_provider, "settings")
+            else 512
+        )
+        safety = (
+            self.llm_provider.settings.llm_prompt_safety_margin
+            if hasattr(self.llm_provider, "settings")
+            else 128
+        )
+        context_window = (
+            self.llm_provider.settings.llm_context_window
+            if hasattr(self.llm_provider, "settings")
+            else 4096
+        )
+        available = context_window - system_tokens - question_tokens - template_tokens - reserved - safety
+        return max(0, available)
+
+    def _build_context(self, chunks: list[RetrievedChunk], question: str) -> str:
+        available = self._available_context_tokens(question)
         parts: list[str] = []
+        used = 0
         for index, chunk in enumerate(chunks, start=1):
             source = chunk.metadata.get("source", "unknown")
             page = chunk.metadata.get("page", "?")
-            parts.append(f"[{index}] {source}, page {page}:\n{chunk.content}")
+            prefix = f"[{index}] {source}, page {page}:\n"
+            prefix_tokens = count_tokens(prefix)
+            remaining = available - used - prefix_tokens
+            if remaining <= 0:
+                break
+            content = chunk.content
+            content_tokens = count_tokens(content)
+            if content_tokens > remaining:
+                content = truncate_text(content, remaining)
+            if not content.strip():
+                continue
+            parts.append(f"{prefix}{content}")
+            used += count_tokens(f"{prefix}{content}") + 2
         return "\n\n".join(parts)
 
     def answer(
@@ -63,7 +100,7 @@ class RAGPipeline:
                 latency_seconds=time.perf_counter() - start,
             )
 
-        context = self._build_context(chunks)
+        context = self._build_context(chunks, question)
         user_prompt = self._template.format(context=context, question=question)
         system_prompt = (
             "You are a careful research assistant. Ground every claim in the provided context."

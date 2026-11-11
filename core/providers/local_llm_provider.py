@@ -35,10 +35,21 @@ class LocalLLMProvider:
                 ],
             )
         except Exception as exc:  # noqa: BLE001 - convert provider errors
-            raise LLMError(
-                f"Local LLM request failed. Is the llama.cpp server running at "
-                f"{self.settings.local_llm_base_url}? Error: {exc}"
-            ) from exc
+            message = str(exc).lower()
+            if "timed out" in message or "timeout" in message:
+                raise LLMError(
+                    f"Local LLM request timed out after {self.settings.local_llm_timeout_seconds} seconds."
+                ) from exc
+            if "connection" in message or "refused" in message or "connect" in message:
+                raise LLMError(
+                    f"Local LLM server is unavailable at {self.settings.local_llm_base_url}."
+                ) from exc
+            status_code = getattr(exc, "status_code", None)
+            if status_code == 404:
+                raise LLMError(
+                    f"Local LLM model '{self.settings.local_llm_model}' was not found on the server."
+                ) from exc
+            raise LLMError(f"Local LLM request failed: {exc}") from exc
 
         if not response.choices:
             raise LLMError("Local LLM returned no choices.")
